@@ -1,5 +1,7 @@
 var pr = new XMLHttpRequest();
+pr.responseType = "json";
 var xhttp = new XMLHttpRequest();
+xhttp.responseType = "json";
 var c = false;
 var cpicked;
 
@@ -9,7 +11,7 @@ pr.onreadystatechange = function() {
 	if (!(this.readyState == 4)) {
 			return;
 	}
-	var pairs = JSON.parse(pr.responseText).data;
+	var pairs = pr.response.data;
 	var select = document.getElementById('coin');
 	for (var j = 0; j < pairs.length; j++) {
 		var coin = pairs[j].name.split("-")[0];
@@ -32,7 +34,9 @@ var end = new Date();
 
 function getData(coin) {
 	cpicked = coin;
-	xhttp.open("GET", `https://trade.ton-rocket.com/time-series/${coin}-TONCOIN?startDate=${start.toISOString()}&endDate=${end.toISOString()}&period=PERIOD_1_DAY`, true);
+	window.ct = coin;
+	window.updatePrice();
+	xhttp.open("GET", `https://trade.ton-rocket.com/time-series/${coin}-TONCOIN?startDate=${start.toISOString()}&endDate=${end.toISOString()}&period=PERIOD_12_HOURS`, true);
 	xhttp.send();
 }
 
@@ -40,7 +44,7 @@ xhttp.onreadystatechange = function() {
 	if (!(this.readyState == 4)) {
 		return;
 	}
-	var jd = JSON.parse(xhttp.responseText);
+	var jd = xhttp.response;
 	if (!jd.success) {
 		alert("Ошибка TON Rocket Trade API");
 		return;
@@ -50,9 +54,8 @@ xhttp.onreadystatechange = function() {
 
 	for (var j = 0; j < data.length; j++) {
 		var z = data[j];
-		console.log(z);
 		cd.push({
-			x: z.openTime,
+			x: new Date(z.openTime),
 			y: [z.openRate, z.maxRate, z.minRate, z.closeRate]
 		})
 	}
