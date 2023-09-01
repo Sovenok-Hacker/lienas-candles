@@ -29,7 +29,7 @@ pr.onreadystatechange = function() {
 }
 
 var start = new Date();
-start.setDate(start.getMonth() - 1);
+start.setMonth(start.getMonth() - 1);
 var end = new Date();
 
 function getData(coin) {
