@@ -46,7 +46,7 @@ xhttp.onreadystatechange = function() {
 	}
 	var jd = xhttp.response;
 	if (!jd.success) {
-		alert("Ошибка TON Rocket Trade API");
+		alert("Ошибка xRocket Trade API");
 		return;
 	}
 	var data = jd.data.timeSeries;
